@@ -575,3 +575,13 @@
 .action-label {
   font-weight: 500;
 }
+
+/**===================
+ * STATS GRID STYLES
+ ===================*/
+.stats__grid {
+  gap: 1.5rem;
+  display: grid;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
