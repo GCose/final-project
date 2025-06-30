@@ -1,0 +1,44 @@
+<!--==================== Stats Cards Grid ====================-->
+<div class="stats__grid">
+  <!--==================== Individual Stat Card ====================-->
+  <div
+    *ngFor="let card of statCards; trackBy: trackByIndex"
+    class="stats__card dashboard__glass"
+    [ngClass]="card.colorClass"
+  >
+    <!--==================== Card Content ====================-->
+    <div class="stats__card-content">
+      <!--==================== Stat Info ====================-->
+      <div class="stats__card-info">
+        <p class="stats__card-label">
+          {{ card.title }}
+        </p>
+        <p class="stats__card-value">
+          {{ stats[card.value] }}
+        </p>
+      </div>
+      <!--==================== End of Stat Info ====================-->
+
+      <!--==================== Stat Icon ====================-->
+      <div class="stats__card-icon" [ngClass]="card.colorClass + '-icon'">
+        <svg
+          class="stats__icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            [attr.d]="getIconPath(card.icon)"
+          ></path>
+        </svg>
+      </div>
+      <!--==================== End of Stat Icon ====================-->
+    </div>
+    <!--==================== End of Card Content ====================-->
+  </div>
+  <!--==================== End of Individual Stat Card ====================-->
+</div>
+<!--==================== End of Stats Cards Grid ====================-->

@@ -1,0 +1,232 @@
+/**==============================
+ * USER TABLE CONTAINER STYLES
+ ==============================*/
+.user-table__container {
+  padding: 0;
+  overflow: hidden;
+}
+
+/**==========================
+ * USER TABLE HEADER STYLES
+ ==========================*/
+.user-table__header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-table__header-content {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.user-table__header-icon {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  background: #dbeafe;
+  justify-content: center;
+  border-radius: var(--radius-md);
+}
+
+.user-table__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #2563eb;
+}
+
+.user-table__header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-table__title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+}
+
+.user-table__subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/**============================
+ * USER TABLE CONTENT STYLES
+ ============================*/
+.user-table__content {
+  padding: 1.5rem;
+}
+
+.user-table__wrapper {
+  overflow: hidden;
+}
+
+.user-table__overflow {
+  overflow-x: auto;
+}
+
+/**====================
+ * USER TABLE STYLES
+ ====================*/
+.user-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.user-table__thead {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.user-table__header-row {
+  border-radius: var(--radius-md);
+}
+
+.user-table__th {
+  border: none;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 1rem 1.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.user-table__th:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.user-table__th:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.user-table__th--actions {
+  text-align: right;
+}
+
+.user-table__tbody {
+  background: var(--bg-card);
+}
+
+.user-table__row {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-table__row:hover {
+  background: var(--bg-hover);
+}
+
+.user-table__row:last-child {
+  border-bottom: none;
+}
+
+.user-table__td {
+  border: none;
+  padding: 1rem 1.5rem;
+  vertical-align: middle;
+}
+
+/**=======================
+ * USER INFO CELL STYLES
+ =======================*/
+.user-table__user-info {
+  gap: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.user-table__user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-table__user-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.user-table__email {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/**===========================
+ * USER TABLE ACTIONS STYLES
+ ===========================*/
+.user-table__actions {
+  gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.user-table__select {
+  min-width: 120px;
+  font-size: 0.875rem;
+}
+
+.user-table__btn {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+}
+
+/**====================
+ * EMPTY STATE STYLES
+ ====================*/
+.user-table__empty {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.user-table__empty-icon {
+  width: 3rem;
+  height: 3rem;
+  color: var(--text-muted);
+  margin: 0 auto 1rem auto;
+}
+
+.user-table__empty-text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/**===================
+ * BREAKPOINT STYLES
+ ===================*/
+@media (max-width: 768px) {
+  .user-table__header {
+    padding: 1rem;
+  }
+
+  .user-table__content {
+    padding: 1rem;
+  }
+
+  .user-table__th,
+  .user-table__td {
+    padding: 0.75rem 1rem;
+  }
+
+  .user-table__actions {
+    gap: 0.5rem;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .user-table__select,
+  .user-table__btn {
+    width: 100%;
+  }
+}

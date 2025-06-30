@@ -1,0 +1,290 @@
+<!--==================== Dashboard Container ====================-->
+<div
+  class="dashboard__container"
+  [ngClass]="
+    themeService.isDarkMode()
+      ? 'dashboard__container--dark'
+      : 'dashboard__container--light'
+  "
+>
+  <!--==================== Background Gradient Orbs ====================-->
+  <!-- <div class="dashboard__background">
+    <div class="gradient__orb orb__1"></div>
+    <div class="gradient__orb orb__2"></div>
+    <div class="gradient__orb orb__3"></div>
+  </div> -->
+  <!--==================== End of Background Gradient Orbs ====================-->
+
+  <!--==================== Sidebar Overlay for Mobile ====================-->
+  <div
+    class="sidebar-overlay"
+    [class.active]="isMobileMenuOpen"
+    (click)="closeMobileMenu()"
+  ></div>
+  <!--==================== End of Sidebar Overlay ====================-->
+
+  <!--==================== Dashboard Layout ====================-->
+  <div class="dashboard__layout dashboard__layout--fixed">
+    <!--==================== Dashboard Sidebar ====================-->
+    <app-dashboard-sidebar
+      [currentUser]="currentUser"
+      [themeService]="themeService"
+      [class.sidebar--open]="isMobileMenuOpen"
+      class="sidebar--fixed"
+    >
+    </app-dashboard-sidebar>
+    <!--==================== End of Dashboard Sidebar ====================-->
+
+    <!--==================== Main Content Wrapper ====================-->
+    <div class="dashboard__content dashboard__content--fixed">
+      <!--==================== Dashboard Header ====================-->
+      <app-dashboard-header
+        [currentUser]="currentUser"
+        [themeService]="themeService"
+        (toggleMobileMenu)="toggleMobileMenu()"
+        class="dashboard__header--fixed"
+      >
+      </app-dashboard-header>
+      <!--==================== End of Dashboard Header ====================-->
+
+      <!--==================== Main Content ====================-->
+      <main class="dashboard__main">
+        <!--==================== Dashboard Title ====================-->
+        <div class="dashboard__title-section">
+          <h2 class="dashboard__title">
+            {{ isAdmin() ? "Administrator" : currentUser?.role }} Dashboard
+          </h2>
+          <p class="dashboard__subtitle">
+            {{
+              isAdmin()
+                ? "Manage users and system roles"
+                : "Welcome to your workspace"
+            }}
+          </p>
+        </div>
+        <!--==================== End of Dashboard Title ====================-->
+
+        <!--==================== Admin Dashboard Layout ====================-->
+        <div *ngIf="isAdmin()" class="dashboard__admin-layout">
+          <!--==================== Stats Cards ====================-->
+          <app-stats-cards [stats]="stats" [themeService]="themeService">
+          </app-stats-cards>
+          <!--==================== End of Stats Cards ====================-->
+
+          <div class="stat-card">
+            <div class="stat-icon hotel-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12,3L2,12H5V20H19V12H22L12,3M12,8.75A1.25,1.25 0 0,1 13.25,10A1.25,1.25 0 0,1 12,11.25A1.25,1.25 0 0,1 10.75,10A1.25,1.25 0 0,1 12,8.75Z"
+                />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ stats.totalRooms }}</h3>
+              <p class="stat-label">Total Rooms</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon available-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+                />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ stats.availableRooms }}</h3>
+              <p class="stat-label">Available Rooms</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon booking-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"
+                />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ stats.totalBookings }}</h3>
+              <p class="stat-label">Total Bookings</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon revenue-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M7,15H9C9,16.08 10.37,17 12,17C13.63,17 15,16.08 15,15C15,13.9 13.96,13.5 11.76,12.97C9.64,12.44 7,11.78 7,9C7,7.21 8.47,5.69 10.5,5.18V3H13.5V5.18C15.53,5.69 17,7.21 17,9H15C15,7.92 13.63,7 12,7C10.37,7 9,7.92 9,9C9,10.1 10.04,10.5 12.24,11.03C14.36,11.56 17,12.22 17,15C17,16.79 15.53,18.31 13.5,18.82V21H10.5V18.82C8.47,18.31 7,16.79 7,15Z"
+                />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">${{ stats.totalRevenue }}</h3>
+              <p class="stat-label">Total Revenue</p>
+            </div>
+          </div>
+
+          <!--==================== Content Grid ====================-->
+          <div class="dashboard__grid dashboard__grid--main">
+            <!--==================== User Management Table ====================-->
+            <div class="dashboard__table-section">
+              <app-user-table
+                [users]="users"
+                [isLoading]="isLoadingUsers"
+                [currentUser]="currentUser"
+                [themeService]="themeService"
+                (userRoleUpdated)="onUserRoleUpdated()"
+                (userDeactivated)="onUserDeactivated()"
+              >
+              </app-user-table>
+            </div>
+            <!--==================== End of User Management Table ====================-->
+
+            <!--==================== Roles Overview ====================-->
+            <div class="dashboard__sidebar-section">
+              <app-roles-overview
+                [roles]="roles"
+                [isLoading]="isLoadingRoles"
+                [themeService]="themeService"
+              >
+              </app-roles-overview>
+            </div>
+            <!--==================== End of Roles Overview ====================-->
+          </div>
+          <!--==================== End of Content Grid ====================-->
+
+          <!--==================== Quick Actions Section ====================-->
+          <!-- <div class="dashboard__quick-actions">
+            <div class="quick-actions__card">
+              <div class="quick-actions__header">
+                <h3 class="quick-actions__title">Quick Actions</h3>
+                <p class="quick-actions__subtitle">
+                  Frequently used admin tasks
+                </p>
+              </div>
+              <div class="quick-actions__grid">
+                <button class="quick-actions__item">
+                  <svg
+                    class="quick-actions__icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  </svg>
+                  <span class="quick-actions__text">Add User</span>
+                </button>
+                <button class="quick-actions__item">
+                  <svg
+                    class="quick-actions__icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                    />
+                  </svg>
+                  <span class="quick-actions__text">Manage Roles</span>
+                </button>
+                <button class="quick-actions__item">
+                  <svg
+                    class="quick-actions__icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                    />
+                  </svg>
+                  <span class="quick-actions__text">View Reports</span>
+                </button>
+                <button class="quick-actions__item">
+                  <svg
+                    class="quick-actions__icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
+                    />
+                  </svg>
+                  <span class="quick-actions__text">System Settings</span>
+                </button>
+              </div>
+            </div>
+          </div> -->
+          <div class="quick-actions">
+            <h3 class="section-title">Quick Actions</h3>
+            <div class="action-buttons">
+              <a routerLink="/rooms" class="action-btn">
+                <svg
+                  class="action-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12,3L2,12H5V20H19V12H22L12,3M12,8.75A1.25,1.25 0 0,1 13.25,10A1.25,1.25 0 0,1 12,11.25A1.25,1.25 0 0,1 10.75,10A1.25,1.25 0 0,1 12,8.75Z"
+                  />
+                </svg>
+                <span class="action-label">Browse Rooms</span>
+              </a>
+
+              <a routerLink="/my-bookings" class="action-btn">
+                <svg
+                  class="action-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"
+                  />
+                </svg>
+                <span class="action-label">My Bookings</span>
+              </a>
+            </div>
+          </div>
+          <!--==================== End of Quick Actions Section ====================-->
+        </div>
+        <!--==================== End of Admin Dashboard Layout ====================-->
+
+        <!--==================== Editor Dashboard Layout ====================-->
+        <div *ngIf="isEditor()" class="dashboard__editor-layout">
+          <!--==================== Welcome Section ====================-->
+          <div class="dashboard__welcome-section">
+            <app-welcome-card
+              [currentUser]="currentUser"
+              [themeService]="themeService"
+              [isEditor]="isEditor()"
+              [isViewer]="isViewer()"
+            >
+            </app-welcome-card>
+          </div>
+          <!--==================== End of Welcome Section ====================-->
+        </div>
+        <!--==================== End of Editor Dashboard Layout ====================-->
+
+        <!--==================== Viewer Dashboard Layout ====================-->
+        <div *ngIf="isViewer()" class="dashboard__viewer-layout">
+          <!--==================== Welcome Section ====================-->
+          <div class="dashboard__welcome-section">
+            <app-welcome-card
+              [currentUser]="currentUser"
+              [themeService]="themeService"
+              [isEditor]="isEditor()"
+              [isViewer]="isViewer()"
+            >
+            </app-welcome-card>
+          </div>
+          <!--==================== End of Welcome Section ====================-->
+        </div>
+        <!--==================== End of Viewer Dashboard Layout ====================-->
+      </main>
+      <!--==================== End of Main Content ====================-->
+    </div>
+    <!--==================== End of Main Content Wrapper ====================-->
+  </div>
+  <!--==================== End of Dashboard Layout ====================-->
+</div>
+<!--==================== End of Dashboard Container ====================-->

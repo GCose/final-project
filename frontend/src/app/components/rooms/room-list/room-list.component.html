@@ -1,0 +1,204 @@
+<div class="room-list-container" [class.dark-theme]="themeService.isDarkMode">
+  <!--==================== Header ====================-->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Browse Rooms</h1>
+      <p class="page-subtitle">Find the perfect room for your stay</p>
+    </div>
+    <div class="header-actions">
+      <button
+        class="btn btn-secondary"
+        (click)="toggleView()"
+        [title]="
+          selectedView === 'grid'
+            ? 'Switch to list view'
+            : 'Switch to grid view'
+        "
+      >
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            *ngIf="selectedView === 'grid'"
+            d="M3,5H21V7H3V5M3,11H21V13H3V11M3,17H21V19H3V17Z"
+          />
+          <path
+            *ngIf="selectedView === 'list'"
+            d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <!--==================== End of Header ====================-->
+
+  <!--==================== Filters ====================-->
+  <div class="filters-container">
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label class="filter-label">Check-in</label>
+        <input
+          type="date"
+          class="filter-input"
+          [(ngModel)]="filters.checkIn"
+          (change)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Check-out</label>
+        <input
+          type="date"
+          class="filter-input"
+          [(ngModel)]="filters.checkOut"
+          (change)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Guests</label>
+        <select
+          class="filter-input"
+          [(ngModel)]="filters.capacity"
+          (change)="onFilterChange()"
+        >
+          <option value="">Any</option>
+          <option value="1">1 Guest</option>
+          <option value="2">2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4 Guests</option>
+          <option value="5">5 Guests</option>
+          <option value="6">6+ Guests</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Room Type</label>
+        <select
+          class="filter-input"
+          [(ngModel)]="filters.type"
+          (change)="onFilterChange()"
+        >
+          <option value="">All Types</option>
+          <option *ngFor="let type of roomTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Price Range</label>
+        <div class="price-range">
+          <input
+            type="number"
+            class="filter-input price-input"
+            placeholder="Min"
+            [(ngModel)]="filters.minPrice"
+            (change)="onFilterChange()"
+          />
+          <span class="price-separator">-</span>
+          <input
+            type="number"
+            class="filter-input price-input"
+            placeholder="Max"
+            [(ngModel)]="filters.maxPrice"
+            (change)="onFilterChange()"
+          />
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-secondary" (click)="clearFilters()">
+          Clear
+        </button>
+        <button class="btn btn-primary" (click)="loadRooms()">Search</button>
+      </div>
+    </div>
+  </div>
+  <!--==================== End of Filters ====================-->
+
+  <!--==================== Loading State ====================-->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading rooms...</p>
+  </div>
+  <!--==================== End of Loading State ====================-->
+
+  <!--==================== Rooms Grid/List ====================-->
+  <div *ngIf="!isLoading" class="rooms-container">
+    <div class="rooms-header">
+      <p class="rooms-count">{{ filteredRooms.length }} rooms available</p>
+    </div>
+
+    <div class="rooms-grid" [class.list-view]="selectedView === 'list'">
+      <div *ngFor="let room of filteredRooms" class="room-card">
+        <div class="room-image">
+          <img
+            [src]="room.images[0]"
+            [alt]="room.type + ' room'"
+            class="room-img"
+          />
+          <div class="room-price-badge">${{ room.price }}/night</div>
+        </div>
+
+        <div class="room-content">
+          <div class="room-header">
+            <div class="room-title">
+              <h3 class="room-type">{{ room.type }}</h3>
+              <span class="room-number">Room {{ room.roomNumber }}</span>
+            </div>
+            <div class="room-capacity">
+              <svg
+                class="capacity-icon"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,9.91 18.11,11.6 16,11.6C13.89,11.6 12.2,9.91 12.2,7.8C12.2,5.69 13.89,4 16,4M16,13.4C18.67,13.4 24,14.73 24,17.4V20H8V17.4C8,14.73 13.33,13.4 16,13.4Z"
+                />
+              </svg>
+              <span>{{ room.capacity }} guests</span>
+            </div>
+          </div>
+
+          <p class="room-description">{{ room.description }}</p>
+
+          <div class="room-amenities">
+            <span
+              *ngFor="let amenity of room.amenities.slice(0, 4)"
+              class="amenity-tag"
+            >
+              {{ amenity }}
+            </span>
+            <span *ngIf="room.amenities.length > 4" class="amenity-more">
+              +{{ room.amenities.length - 4 }} more
+            </span>
+          </div>
+
+          <div class="room-footer">
+            <div class="room-info">
+              <span class="floor-info">Floor {{ room.floor }}</span>
+            </div>
+            <button class="btn btn-primary" (click)="bookRoom(room._id)">
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--==================== Empty State ====================-->
+    <div *ngIf="filteredRooms.length === 0" class="empty-state">
+      <svg class="empty-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M12,3L2,12H5V20H19V12H22L12,3M12,8.75A1.25,1.25 0 0,1 13.25,10A1.25,1.25 0 0,1 12,11.25A1.25,1.25 0 0,1 10.75,10A1.25,1.25 0 0,1 12,8.75Z"
+        />
+      </svg>
+      <h3 class="empty-title">No rooms found</h3>
+      <p class="empty-message">Try adjusting your search filters</p>
+      <button class="btn btn-primary" (click)="clearFilters()">
+        Reset Filters
+      </button>
+    </div>
+    <!--==================== End of Empty State ====================-->
+  </div>
+  <!--==================== End of Rooms Grid/List ====================-->
+</div>

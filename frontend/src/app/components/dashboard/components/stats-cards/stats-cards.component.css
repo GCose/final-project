@@ -1,0 +1,115 @@
+/**===================
+ * STATS GRID STYLES
+ ===================*/
+.stats__grid {
+  gap: 1.5rem;
+  display: grid;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/**===================
+ * STATS CARD STYLES
+ ===================*/
+.stats__card {
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stats__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stats__card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats__card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats__card-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-secondary);
+}
+
+.stats__card-value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/**===================
+ * STATS ICON STYLES
+ ===================*/
+.stats__card-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/**=======================
+ * STATS COLOR VARIANTS
+ =======================*/
+.stats__card--blue-icon {
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+.stats__card--green-icon {
+  color: #16a34a;
+  background: #dcfce7;
+}
+
+.stats__card--red-icon {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.stats__card--yellow-icon {
+  color: #d97706;
+  background: #fef3c7;
+}
+
+.stats__card--purple-icon {
+  color: #9333ea;
+  background: #f3e8ff;
+}
+
+/**===================
+ * BREAKPOINT STYLES
+ ===================*/
+@media (max-width: 768px) {
+  .stats__card {
+    padding: 1rem;
+  }
+
+  .stats__card-value {
+    font-size: 1.75rem;
+  }
+
+  .stats__card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .stats__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

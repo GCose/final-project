@@ -1,0 +1,67 @@
+<!--==================== Welcome Card Container ====================-->
+<div class="welcome__container dashboard__glass">
+  <!--==================== Welcome Avatar ====================-->
+  <div class="avatar avatar--lg welcome__avatar">
+    {{ currentUser?.fullName?.charAt(0)?.toUpperCase() }}
+  </div>
+  <!--==================== End of Welcome Avatar ====================-->
+
+  <!--==================== Welcome Title ====================-->
+  <h3 class="welcome__title">Welcome to RoleAuth</h3>
+  <!--==================== End of Welcome Title ====================-->
+
+  <!--==================== Welcome Subtitle ====================-->
+  <p class="welcome__subtitle">
+    You're logged in as
+    <span class="badge" [ngClass]="getRoleClass()">
+      {{ currentUser?.role }}
+    </span>
+  </p>
+  <!--==================== End of Welcome Subtitle ====================-->
+
+  <!--==================== Role Description ====================-->
+  <div class="welcome__description">
+    <!--==================== Editor Content ====================-->
+    <div *ngIf="isEditor" class="welcome__role-info">
+      <p class="welcome__role-text">
+        As an Editor, you can create, view, and edit content but cannot delete
+        or manage users.
+      </p>
+
+      <!--==================== Editor Permissions ====================-->
+      <div class="welcome__permissions">
+        <span
+          *ngFor="let permission of getPermissions()"
+          class="welcome__permission-tag"
+          [ngClass]="getPermissionClass()"
+        >
+          {{ permission }}
+        </span>
+      </div>
+      <!--==================== End of Editor Permissions ====================-->
+    </div>
+    <!--==================== End of Editor Content ====================-->
+
+    <!--==================== Viewer Content ====================-->
+    <div *ngIf="isViewer" class="welcome__role-info">
+      <p class="welcome__role-text">
+        As a Viewer, you have read-only access to view content.
+      </p>
+
+      <!--==================== Viewer Permissions ====================-->
+      <div class="welcome__permissions">
+        <span
+          *ngFor="let permission of getPermissions()"
+          class="welcome__permission-tag"
+          [ngClass]="getPermissionClass()"
+        >
+          {{ permission }}
+        </span>
+      </div>
+      <!--==================== End of Viewer Permissions ====================-->
+    </div>
+    <!--==================== End of Viewer Content ====================-->
+  </div>
+  <!--==================== End of Role Description ====================-->
+</div>
+<!--==================== End of Welcome Card Container ====================-->

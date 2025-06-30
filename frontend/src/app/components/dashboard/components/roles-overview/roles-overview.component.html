@@ -1,0 +1,81 @@
+<!--==================== Roles Container ====================-->
+<div class="roles__container dashboard__glass">
+  <!--==================== Roles Header ====================-->
+  <div class="roles__header">
+    <div class="roles__header-content">
+      <!--==================== Header Icon ====================-->
+      <div class="roles__header-icon">
+        <svg
+          class="roles__icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          ></path>
+        </svg>
+      </div>
+      <!--==================== End of Header Icon ====================-->
+
+      <!--==================== Header Text ====================-->
+      <div class="roles__header-text">
+        <h3 class="roles__title">System Roles</h3>
+        <p class="roles__subtitle">Available role permissions</p>
+      </div>
+      <!--==================== End of Header Text ====================-->
+    </div>
+  </div>
+  <!--==================== End of Roles Header ====================-->
+
+  <!--==================== Roles Content ====================-->
+  <div class="roles__content">
+    <!--==================== Loading State ====================-->
+    <div *ngIf="isLoading" class="loading__container">
+      <div class="loading__spinner"></div>
+      <p class="loading__text">Loading roles...</p>
+    </div>
+    <!--==================== End of Loading State ====================-->
+
+    <!--==================== Roles List ====================-->
+    <div *ngIf="!isLoading" class="roles__list">
+      <!--==================== Individual Role ====================-->
+      <div
+        *ngFor="let role of roles; trackBy: trackByRoleId"
+        class="roles__item"
+      >
+        <!--==================== Role Header ====================-->
+        <div class="roles__item-header">
+          <span class="badge" [ngClass]="getRoleBadgeClass(role.name)">
+            {{ role.name }}
+          </span>
+        </div>
+        <!--==================== End of Role Header ====================-->
+
+        <!--==================== Role Description ====================-->
+        <p class="roles__description">
+          {{ role.description }}
+        </p>
+        <!--==================== End of Role Description ====================-->
+
+        <!--==================== Role Permissions ====================-->
+        <div class="roles__permissions">
+          <span
+            *ngFor="let permission of role.permissions"
+            class="roles__permission-tag"
+          >
+            {{ permission }}
+          </span>
+        </div>
+        <!--==================== End of Role Permissions ====================-->
+      </div>
+      <!--==================== End of Individual Role ====================-->
+    </div>
+    <!--==================== End of Roles List ====================-->
+  </div>
+  <!--==================== End of Roles Content ====================-->
+</div>
+<!--==================== End of Roles Container ====================-->

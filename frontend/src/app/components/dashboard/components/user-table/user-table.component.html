@@ -1,0 +1,179 @@
+<!--==================== User Management Container ====================-->
+<div class="user-table__container dashboard__glass">
+  <!--==================== Table Header ====================-->
+  <div class="user-table__header">
+    <div class="user-table__header-content">
+      <!--==================== Header Icon ====================-->
+      <div class="user-table__header-icon">
+        <svg
+          class="user-table__icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+          ></path>
+        </svg>
+      </div>
+      <!--==================== End of Header Icon ====================-->
+
+      <!--==================== Header Text ====================-->
+      <div class="user-table__header-text">
+        <h3 class="user-table__title">User Management</h3>
+        <p class="user-table__subtitle">Manage user roles and permissions</p>
+      </div>
+      <!--==================== End of Header Text ====================-->
+    </div>
+  </div>
+  <!--==================== End of Table Header ====================-->
+
+  <!--==================== Table Content ====================-->
+  <div class="user-table__content">
+    <!--==================== Loading State ====================-->
+    <div *ngIf="isLoading" class="loading__container">
+      <div class="loading__spinner"></div>
+      <p class="loading__text">Loading users...</p>
+    </div>
+    <!--==================== End of Loading State ====================-->
+
+    <!--==================== Empty State ====================-->
+    <div *ngIf="!isLoading && users.length === 0" class="user-table__empty">
+      <svg
+        class="user-table__empty-icon"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+        ></path>
+      </svg>
+      <p class="user-table__empty-text">No users found</p>
+    </div>
+    <!--==================== End of Empty State ====================-->
+
+    <!--==================== Users Table ====================-->
+    <div *ngIf="!isLoading && users.length > 0" class="user-table__wrapper">
+      <!--==================== Table Container ====================-->
+      <div class="user-table__overflow">
+        <table class="user-table">
+          <!--==================== Table Header ====================-->
+          <thead class="user-table__thead">
+            <tr class="user-table__header-row">
+              <th class="user-table__th">User</th>
+              <th class="user-table__th">Email</th>
+              <th class="user-table__th">Role</th>
+              <th class="user-table__th">Status</th>
+              <th class="user-table__th user-table__th--actions">Actions</th>
+            </tr>
+          </thead>
+          <!--==================== End of Table Header ====================-->
+
+          <!--==================== Table Body ====================-->
+          <tbody class="user-table__tbody">
+            <!--==================== Table Row ====================-->
+            <tr
+              *ngFor="let user of users; trackBy: trackByUserId"
+              class="user-table__row"
+            >
+              <!--==================== User Info Cell ====================-->
+              <td class="user-table__td">
+                <div class="user-table__user-info">
+                  <!--==================== User Avatar ====================-->
+                  <div class="avatar avatar--sm">
+                    {{ user.fullName?.charAt(0)?.toUpperCase() }}
+                  </div>
+                  <!--==================== End of User Avatar ====================-->
+
+                  <!--==================== User Name ====================-->
+                  <div class="user-table__user-details">
+                    <div class="user-table__user-name">
+                      {{ user.fullName }}
+                    </div>
+                  </div>
+                  <!--==================== End of User Name ====================-->
+                </div>
+              </td>
+              <!--==================== End of User Info Cell ====================-->
+
+              <!--==================== Email Cell ====================-->
+              <td class="user-table__td">
+                <div class="user-table__email">
+                  {{ user.email }}
+                </div>
+              </td>
+              <!--==================== End of Email Cell ====================-->
+
+              <!--==================== Role Cell ====================-->
+              <td class="user-table__td">
+                <span
+                  class="badge"
+                  [ngClass]="getRoleBadgeClass(user.role?.name)"
+                >
+                  {{ user.role?.name }}
+                </span>
+              </td>
+              <!--==================== End of Role Cell ====================-->
+
+              <!--==================== Status Cell ====================-->
+              <td class="user-table__td">
+                <span
+                  class="badge"
+                  [ngClass]="
+                    user.isActive !== false
+                      ? 'badge--active'
+                      : 'badge--inactive'
+                  "
+                >
+                  {{ user.isActive !== false ? "Active" : "Inactive" }}
+                </span>
+              </td>
+              <!--==================== End of Status Cell ====================-->
+
+              <!--==================== Actions Cell ====================-->
+              <td class="user-table__td">
+                <div class="user-table__actions">
+                  <!--==================== Role Selector ====================-->
+                  <select
+                    (change)="onRoleChange($event, user._id)"
+                    [value]="user.role?.name"
+                    class="form__select user-table__select"
+                  >
+                    <option value="Admin">Admin</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Viewer">Viewer</option>
+                  </select>
+                  <!--==================== End of Role Selector ====================-->
+
+                  <!--==================== Deactivate Button ====================-->
+                  <button
+                    (click)="deactivateUser(user._id)"
+                    *ngIf="user._id !== currentUser?.id"
+                    class="btn btn--danger user-table__btn"
+                  >
+                    Deactivate
+                  </button>
+                  <!--==================== End of Deactivate Button ====================-->
+                </div>
+              </td>
+              <!--==================== End of Actions Cell ====================-->
+            </tr>
+            <!--==================== End of Table Row ====================-->
+          </tbody>
+          <!--==================== End of Table Body ====================-->
+        </table>
+      </div>
+      <!--==================== End of Table Container ====================-->
+    </div>
+    <!--==================== End of Users Table ====================-->
+  </div>
+  <!--==================== End of Table Content ====================-->
+</div>
+<!--==================== End of User Management Container ====================-->

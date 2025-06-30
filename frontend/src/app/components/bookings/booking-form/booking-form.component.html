@@ -1,0 +1,228 @@
+<div
+  class="booking-form-container"
+  [class.dark-theme]="themeService.isDarkMode"
+>
+  <!--==================== Back Button ====================-->
+  <div class="page-header">
+    <button class="btn btn-secondary back-btn" (click)="goBack()">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+        />
+      </svg>
+      Back to Rooms
+    </button>
+  </div>
+  <!--==================== End of Back Button ====================-->
+
+  <!--==================== Loading State ====================-->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading room details...</p>
+  </div>
+  <!--==================== End of Loading State ====================-->
+
+  <!--==================== Booking Form ====================-->
+  <div *ngIf="!isLoading && room" class="booking-content">
+    <div class="booking-grid">
+      <!--==================== Room Details ====================-->
+      <div class="room-details-card">
+        <div class="room-image">
+          <img [src]="room.images[0]" [alt]="room.type" class="room-img" />
+        </div>
+
+        <div class="room-info">
+          <h2 class="room-title">{{room.type}}</h2>
+          <p class="room-number">Room {{room.roomNumber}}</p>
+          <p class="room-description">{{room.description}}</p>
+
+          <div class="room-details">
+            <div class="detail-item">
+              <span class="detail-label">Capacity:</span>
+              <span class="detail-value">{{room.capacity}} guests</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Floor:</span>
+              <span class="detail-value">{{room.floor}}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Price:</span>
+              <span class="detail-value">${{room.price}}/night</span>
+            </div>
+          </div>
+
+          <div class="amenities">
+            <h4 class="amenities-title">Amenities</h4>
+            <div class="amenities-list">
+              <span *ngFor="let amenity of room.amenities" class="amenity-tag">
+                {{amenity}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--==================== End of Room Details ====================-->
+
+      <!--==================== Booking Form ====================-->
+      <div class="booking-form-card">
+        <h3 class="form-title">Book This Room</h3>
+
+        <form (ngSubmit)="onSubmit()" class="booking-form">
+          <!--==================== Error Message ====================-->
+          <div *ngIf="errorMessage" class="error-alert">{{errorMessage}}</div>
+          <!--==================== End of Error Message ====================-->
+
+          <!--==================== Guest Information ====================-->
+          <div class="form-section">
+            <h4 class="section-title">Guest Information</h4>
+
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input
+                type="text"
+                class="form-input"
+                [(ngModel)]="bookingData.guestName"
+                name="guestName"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input
+                type="email"
+                class="form-input"
+                [(ngModel)]="bookingData.guestEmail"
+                name="guestEmail"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Phone Number *</label>
+              <input
+                type="tel"
+                class="form-input"
+                [(ngModel)]="bookingData.guestPhone"
+                name="guestPhone"
+                required
+              />
+            </div>
+          </div>
+          <!--==================== End of Guest Information ====================-->
+
+          <!--==================== Stay Details ====================-->
+          <div class="form-section">
+            <h4 class="section-title">Stay Details</h4>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Check-in Date *</label>
+                <input
+                  type="date"
+                  class="form-input"
+                  [(ngModel)]="bookingData.checkInDate"
+                  name="checkInDate"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Check-out Date *</label>
+                <input
+                  type="date"
+                  class="form-input"
+                  [(ngModel)]="bookingData.checkOutDate"
+                  name="checkOutDate"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Number of Guests *</label>
+              <select
+                class="form-input"
+                [(ngModel)]="bookingData.numberOfGuests"
+                name="numberOfGuests"
+                required
+              >
+                <option *ngFor="let i of [1,2,3,4,5,6,7,8]" [value]="i">
+                  {{i}} {{i === 1 ? 'Guest' : 'Guests'}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Special Requests</label>
+              <textarea
+                class="form-input form-textarea"
+                [(ngModel)]="bookingData.specialRequests"
+                name="specialRequests"
+                placeholder="Any special requests or preferences..."
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+          <!--==================== End of Stay Details ====================-->
+
+          <!--==================== Booking Summary ====================-->
+          <div class="booking-summary">
+            <h4 class="summary-title">Booking Summary</h4>
+
+            <div class="summary-row">
+              <span class="summary-label">Check-in:</span>
+              <span class="summary-value"
+                >{{bookingData.checkInDate | date}}</span
+              >
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Check-out:</span>
+              <span class="summary-value"
+                >{{bookingData.checkOutDate | date}}</span
+              >
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Number of nights:</span>
+              <span class="summary-value">{{numberOfNights}}</span>
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Guests:</span>
+              <span class="summary-value">{{bookingData.numberOfGuests}}</span>
+            </div>
+
+            <div class="summary-row price-row">
+              <span class="summary-label">Total Cost:</span>
+              <span class="summary-value total-price">${{totalCost}}</span>
+            </div>
+          </div>
+          <!--==================== End of Booking Summary ====================-->
+
+          <!--==================== Submit Button ====================-->
+          <button
+            type="submit"
+            class="btn btn-primary submit-btn"
+            [disabled]="isSubmitting"
+          >
+            <span *ngIf="!isSubmitting">Confirm Booking</span>
+            <span *ngIf="isSubmitting">Processing...</span>
+          </button>
+          <!--==================== End of Submit Button ====================-->
+        </form>
+      </div>
+      <!--==================== End of Booking Form ====================-->
+    </div>
+  </div>
+  <!--==================== End of Booking Form ====================-->
+
+  <!--==================== Error State ====================-->
+  <div *ngIf="!isLoading && !room" class="error-state">
+    <h3>Room Not Found</h3>
+    <p>The requested room could not be found.</p>
+    <button class="btn btn-primary" (click)="goBack()">Back to Rooms</button>
+  </div>
+  <!--==================== End of Error State ====================-->
+</div>
